@@ -22,10 +22,18 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
         }
     }
 
+    public void placePiece(Item item, int[][] material, int lineIndex, int columnIndex){
+        for (int i = 0; i < material.length; i++) {
+            for (int j = 0; j < material[i].length; j++) {
+                material[lineIndex + i][columnIndex + j] = (char) item.getId();
+                //x + y * with
+            }
+        }
+    }
+
     public StockingProblemIndividual(StockingProblemIndividual original) {
         super(original);
         //TODO
-        throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     @Override
