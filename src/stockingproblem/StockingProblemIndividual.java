@@ -65,10 +65,28 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
     @Override
     public double computeFitness() {
         //TODO
+        int cuts = 0;
         //usar o menor numero de colunas
-        //Contar os cortes verticais
 
-        //Contar os cortes  horizontais
+        for (int i = 0; i < material.length; i++) {
+            for (int j = 0; j < material[i].length; j++) {
+                if (j == material[i].length-1) {
+                    break;
+                }
+
+                //Contar os cortes verticais
+                if ((char)material[i+1][j] != (char) material[i][j]) {
+                    cuts++;
+                }
+
+                //Contar os cortes  horizontais
+                if ((char) material[i][j+1] != (char) material[i][j]) {
+                    cuts++;
+                }
+            }
+        }
+
+        System.out.println(cuts);
 
         return this.fitness;
     }
