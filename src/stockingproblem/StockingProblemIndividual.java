@@ -45,6 +45,7 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
                 }
             }
         }
+
     }
 
     public StockingProblemIndividual(StockingProblemIndividual original) {
@@ -70,23 +71,23 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
 
         for (int i = 0; i < material.length; i++) {
             for (int j = 0; j < material[i].length; j++) {
-                if (j == material[i].length-1) {
+                if (i == material.length-1 || j == material[i].length-1) {
                     break;
                 }
 
                 //Contar os cortes verticais
-                if ((char)material[i+1][j] != (char) material[i][j]) {
+                if ((char)material[i][j+1] != (char) material[i][j]) {
                     cuts++;
                 }
 
                 //Contar os cortes  horizontais
-                if ((char) material[i][j+1] != (char) material[i][j]) {
+                if ((char) material[i+1][j] != (char) material[i][j]) {
                     cuts++;
                 }
             }
         }
 
-        System.out.println(cuts);
+        this.fitness = cuts;
 
         return this.fitness;
     }
