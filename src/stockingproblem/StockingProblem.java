@@ -36,6 +36,10 @@ public class StockingProblem implements Problem<StockingProblemIndividual> {
         return items;
     }
 
+    public int getMaxWidth() {
+        return maxWidth;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -72,9 +76,5 @@ public class StockingProblem implements Problem<StockingProblemIndividual> {
             items.add(new Item(i, matrix));
         }
         return new StockingProblem(materialHeight, items);
-    }
-
-    public int getMaxWidth() {
-        return maxWidth;
     }
 }

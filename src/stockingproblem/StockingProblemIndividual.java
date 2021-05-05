@@ -15,18 +15,15 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
         this.material = new int[problem.getMaterialHeight()][problem.getMaxWidth()];
         fillGenome(size);
         fillMatrix();
-
-        /*for (int i : genome) {
-            Item item = problem.getItems().get(i);
-            System.out.println(item + " letra " + item.getRepresentation());
-        }*/
     }
 
     public StockingProblemIndividual(StockingProblemIndividual original) {
         super(original);
         //TODO
-        this.material = original.material;
-
+        this.material = new int[original.material.length][original.material[0].length];
+        for (int i = 0; i < this.material.length; i++) {
+            System.arraycopy(original.material, 0, this.material, 0, original.material.length);
+        }
     }
 
     private void fillGenome(int size) {
