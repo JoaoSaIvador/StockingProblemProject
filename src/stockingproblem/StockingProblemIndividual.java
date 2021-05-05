@@ -8,13 +8,15 @@ import java.util.Arrays;
 public class StockingProblemIndividual extends IntVectorIndividual<StockingProblem, StockingProblemIndividual> {
     //TODO this class might require the definition of additional methods and/or attributes
     private int[][] material;
+    private int cuts;
+    private int columns;
 
     public StockingProblemIndividual(StockingProblem problem, int size) {
         super(problem, size);
         //TODO
-        this.material = new int[problem.getMaterialHeight()][problem.getMaxWidth()];
         fillGenome(size);
-        fillMatrix();
+        this.cuts = 0;
+        this.columns = 0;
     }
 
     public StockingProblemIndividual(StockingProblemIndividual original) {
@@ -22,8 +24,10 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
         //TODO
         this.material = new int[original.material.length][original.material[0].length];
         for (int i = 0; i < this.material.length; i++) {
-            System.arraycopy(original.material, 0, this.material, 0, original.material.length);
+            System.arraycopy(original.material[i], 0, this.material[i], 0, original.material[i].length);
         }
+        this.cuts = original.cuts;
+        this.columns = original.columns;
     }
 
     private void fillGenome(int size) {
@@ -36,14 +40,6 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
             int temp = this.genome[randomIndexToSwap];
             this.genome[randomIndexToSwap] = this.genome[i];
             this.genome[i] = temp;
-        }
-    }
-
-    private void placePiece(Item item, int lineIndex, int columnIndex){
-        for (int i = 0; i < item.getLines(); i++) {
-            for (int j = 0; j < item.getColumns(); j++) {
-                material[lineIndex + i][columnIndex + j] = item.getRepresentation();
-            }
         }
     }
 
@@ -61,15 +57,28 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
                 if (valid){
                     break;
                 }
+                System.out.println(column);
             }
+        }
+    }
+
+    private void placePiece(Item item, int lineIndex, int columnIndex){
+        for (int i = 0; i < item.getLines(); i++) {
+            for (int j = 0; j < item.getColumns(); j++) {
+                material[lineIndex + i][columnIndex + j] = item.getRepresentation();
+            }
+        }
+        if (columnIndex + item.getColumns() > columns) {
+            columns = columnIndex + item.getColumns();
         }
     }
 
     @Override
     public double computeFitness() {
         //TODO
-        int cuts = 0;
-        //usar o menor numero de colunas
+
+        this.material = new int[problem.getMaterialHeight()][problem.getMaxWidth()];
+        fillMatrix();
 
         for (int i = 0; i < material.length; i++) {
             for (int j = 0; j < material[i].length; j++) {
@@ -78,15 +87,15 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
                 }
                 //Contar os cortes verticais
                 if ((char)material[i][j+1] != (char) material[i][j]) {
-                    cuts++;
+                    this.cuts++;
                 }
                 //Contar os cortes  horizontais
                 if ((char) material[i+1][j] != (char) material[i][j]) {
-                    cuts++;
+                    this.cuts++;
                 }
             }
         }
-        this.fitness = cuts + material.length;
+        this.fitness = this.cuts + this.columns;
 
         return this.fitness;
     }
