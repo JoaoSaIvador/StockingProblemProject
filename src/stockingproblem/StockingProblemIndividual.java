@@ -15,8 +15,6 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
         super(problem, size);
         //TODO
         fillGenome(size);
-        this.cuts = 0;
-        this.columns = 0;
     }
 
     public StockingProblemIndividual(StockingProblemIndividual original) {
@@ -68,9 +66,6 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
                 material[lineIndex + i][columnIndex + j] = item.getRepresentation();
             }
         }
-        if (columnIndex + item.getColumns() > columns) {
-            columns = columnIndex + item.getColumns();
-        }
     }
 
     @Override
@@ -79,6 +74,9 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
 
         this.material = new int[problem.getMaterialHeight()][problem.getMaxWidth()];
         fillMatrix();
+        this.cuts = 0;
+        computeColumns();
+        System.out.println(columns);
 
         for (int i = 0; i < material.length; i++) {
             for (int j = 0; j < material[i].length; j++) {
@@ -95,9 +93,17 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
                 }
             }
         }
-        this.fitness = this.cuts + this.columns;
+        this.fitness = (0.9 * this.cuts) + (0.1 * this.columns);
 
         return this.fitness;
+    }
+
+    private void computeColumns() {
+        for (int j = material[0].length-1; j > 0; j--) {
+              if(material[0][j-1] != material[0][j]){
+                  columns = j;
+              }
+        }
     }
 
     private boolean checkValidPlacement(Item item, int lineIndex, int columnIndex) {
