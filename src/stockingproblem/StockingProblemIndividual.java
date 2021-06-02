@@ -55,7 +55,7 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
                 if (valid){
                     break;
                 }
-                System.out.println(column);
+                //System.out.println(column);
             }
         }
     }
@@ -63,7 +63,9 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
     private void placePiece(Item item, int lineIndex, int columnIndex){
         for (int i = 0; i < item.getLines(); i++) {
             for (int j = 0; j < item.getColumns(); j++) {
-                material[lineIndex + i][columnIndex + j] = item.getRepresentation();
+                if(item.getMatrix()[i][j] != 0) {
+                    material[lineIndex + i][columnIndex + j] = item.getRepresentation();
+                }
             }
         }
     }
@@ -76,7 +78,7 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
         fillMatrix();
         this.cuts = 0;
         computeColumns();
-        System.out.println(columns);
+        //System.out.println(columns);
 
         for (int i = 0; i < material.length; i++) {
             for (int j = 0; j < material[i].length; j++) {
