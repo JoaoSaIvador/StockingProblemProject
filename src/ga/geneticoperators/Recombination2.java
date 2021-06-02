@@ -65,8 +65,10 @@ public class Recombination2<I extends IntVectorIndividual, P extends Problem<I>>
 
         // copy the tours from the children back into the parents, because crossover
         // functions are in-place!
-        //Collections.copy(ind1, child2);
-        //Collections.copy(ind2, child1);
+        for (int i = 0; i < size; i++) {
+            ind1.setGene(i,(int)child2.get(i));
+            ind2.setGene(i,(int)child1.get(i));
+        }
     }
 
     @Override
