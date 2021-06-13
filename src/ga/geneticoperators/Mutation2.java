@@ -24,7 +24,7 @@ public class Mutation2<I extends IntVectorIndividual, P extends Problem<I>> exte
             cut2 = aux;
         }
 
-        for (int i = cut1-1; i < cut2; i++) {
+        for (int i = cut1+1; i < cut2; i++) {
             int randomIndexToSwap = GeneticAlgorithm.random.nextInt(ind.getNumGenes());
             int temp = ind.getGene(randomIndexToSwap);
             ind.setGene(randomIndexToSwap, ind.getGene(i));

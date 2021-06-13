@@ -44,6 +44,10 @@ public class Population <I extends Individual, P extends Problem<I>>{
     public void addIndividual(I individual){
         individuals.add(individual);
     }
+
+    public void removeIndividual(I individual){
+        individuals.remove(individual);
+    }
     
     public I getIndividual(int index) {
         return individuals.get(index);

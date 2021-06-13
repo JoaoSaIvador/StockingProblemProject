@@ -141,7 +141,7 @@ public class MainFrame extends JFrame implements AlgorithmListener {
     }
 
     public void buttonDataSet_actionPerformed(ActionEvent e) {
-        JFileChooser fc = new JFileChooser(new java.io.File("."));
+        JFileChooser fc = new JFileChooser(new java.io.File("./DataSets"));
         int returnVal = fc.showOpenDialog(this);
 
         try {
@@ -445,7 +445,7 @@ class PanelParameters extends PanelAtributesValue {
     JTextField jTextFieldSeed = new JTextField(SEED, TEXT_FIELD_LENGHT);
     JTextField jTextFieldN = new JTextField(POPULATION_SIZE, TEXT_FIELD_LENGHT);
     JTextField jTextFieldGenerations = new JTextField(GENERATIONS, TEXT_FIELD_LENGHT);
-    String[] selectionMethods = {"Tournament", "Roulette wheel"};
+    String[] selectionMethods = {"Tournament", "Roulette wheel", "Elitism"};
     JComboBox jComboBoxSelectionMethods = new JComboBox(selectionMethods);
     JTextField jTextFieldTournamentSize = new JTextField(TOURNAMENT_SIZE, TEXT_FIELD_LENGHT);
     String[] recombinationMethods = {"PMX", "Recombination 2", "Recombination 3"};
@@ -511,6 +511,13 @@ class PanelParameters extends PanelAtributesValue {
             case 1:
                 return new RouletteWheel<>(
                         Integer.parseInt(jTextFieldN.getText()));
+            case 2:
+                return new Elitism<>(
+                        Integer.parseInt(jTextFieldN.getText()),
+                        new Tournament<>(
+                            Integer.parseInt(jTextFieldN.getText()),
+                            Integer.parseInt(jTextFieldTournamentSize.getText()))
+                        );
         }
         return null;
     }
