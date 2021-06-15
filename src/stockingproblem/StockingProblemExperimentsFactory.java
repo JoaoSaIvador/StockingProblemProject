@@ -33,15 +33,19 @@ public class StockingProblemExperimentsFactory extends ExperimentsFactory {
         numRuns = Integer.parseInt(getParameterValue("Runs"));
         populationSize = Integer.parseInt(getParameterValue("Population_size"));
         maxGenerations = Integer.parseInt(getParameterValue("Max_generations"));
-
+        int tournamentSize;
         //SELECTION
         switch (getParameterValue("Selection")) {
             case "tournament":
-                int tournamentSize = Integer.parseInt(getParameterValue("Tournament_size"));
+                tournamentSize = Integer.parseInt(getParameterValue("Tournament_size"));
                 selection = new Tournament<>(populationSize, tournamentSize);
                 break;
             case "roulette_wheel":
                 selection = new RouletteWheel<>(populationSize);
+                break;
+            case "elitism":
+                tournamentSize = Integer.parseInt(getParameterValue("Tournament_size"));
+                selection = new Elitism<>(populationSize, new Tournament<>(populationSize,tournamentSize));
         }
 
         //RECOMBINATION
@@ -51,10 +55,10 @@ public class StockingProblemExperimentsFactory extends ExperimentsFactory {
             case "pmx":
                 recombination = new RecombinationPartialMapped<>(recombinationProbability);
                 break;
-            case "recombination2": //TODO
+            case "ordered": //TODO
                 recombination = new Recombination2<>(recombinationProbability);
                 break;
-            case "recombination3": //TODO
+            case "cycle": //TODO
                 recombination = new Recombination3<>(recombinationProbability);
                 break;
         }
