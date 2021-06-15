@@ -457,6 +457,8 @@ class PanelParameters extends PanelAtributesValue {
     String[] algorithms = {"GA", "Random"};
     JComboBox jComboBoxAlgorithms = new JComboBox(algorithms);
 
+
+
     public PanelParameters() {
         title = "Genetic algorithm parameters";
 

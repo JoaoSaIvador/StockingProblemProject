@@ -10,6 +10,7 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
     private int[][] material;
     private int cuts;
     private int columns;
+    private int emptySpaces;
 
     public StockingProblemIndividual(StockingProblem problem, int size) {
         super(problem, size);
@@ -26,6 +27,7 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
         }
         this.cuts = original.cuts;
         this.columns = original.columns;
+        this.emptySpaces = original.emptySpaces;
     }
 
     private void fillGenome(int size) {
@@ -77,11 +79,12 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
         this.material = new int[problem.getMaterialHeight()][problem.getMaxWidth()];
         fillMatrix();
         this.cuts = 0;
+        this.emptySpaces = 0;
         computeColumns();
-        //System.out.println(columns);
+        System.out.println("Colunas: " + columns);
 
         for (int i = 0; i < material.length; i++) {
-            for (int j = 0; j < material[i].length; j++) {
+            for (int j = 0; j < columns; j++) {
                 if (i == material.length-1 || j == material[i].length-1) {
                     break;
                 }
@@ -93,18 +96,24 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
                 if ((char) material[i+1][j] != (char) material[i][j]) {
                     this.cuts++;
                 }
+                if ((char) material[i][j] == 0) {
+                    emptySpaces++;
+                }
             }
         }
-        this.fitness = (0.9 * this.cuts) + (0.1 * this.columns);
+        System.out.println("Empty: " + emptySpaces);
+        this.fitness = (0.5 * this.cuts) + (0.5 * this.columns) + emptySpaces;
 
         return this.fitness;
     }
 
     private void computeColumns() {
-        for (int j = material[0].length-1; j > 0; j--) {
-              if(material[0][j-1] != material[0][j]){
-                  columns = j;
-              }
+        for (int j = 0; j < material[0].length-1; j++) {
+            for (int i = 0; i < material.length-1; i++) {
+                if(material[i][j] != material[i][j+1] && j>this.columns){
+                    this.columns = j;
+                }
+            }
         }
     }
 
