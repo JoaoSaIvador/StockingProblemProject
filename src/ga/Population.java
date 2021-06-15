@@ -9,7 +9,7 @@ import java.util.List;
 public class Population <I extends Individual, P extends Problem<I>>{
 
     private final List<I> individuals;
-    private I best; 
+    private I best;
 
     public Population(int size) {
         individuals = new ArrayList<>(size);
